@@ -2,48 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
-const auth = require("../../middleware/auth");
+const auth = require("../middleware/auth");
 const { sendWelcomeEmail, sendCancelationEmail } = require("../emails/account");
 const multer = require("multer");
 const sharp = require("sharp");
-
-// @route   GET api/users/me
-// @desc    Get the user
-// @access  Private
-router.get("/me", async (req, res) => {
-  return req.user;
-});
-
-// @route   GET api/users/avatar/me
-// @desc    View your own profile photo/ avatar
-// @access  Private
-router.get("/avatar/me", auth, async (req, res) => {
-  try {
-    if (!req.user.avatar) {
-      throw new Error();
-    }
-    res.set("Content-Type", "image/png");
-    res.send(req.user.avatar);
-  } catch (e) {
-    res.status(404).send({ errors: [{ msg: "No profile photo found" }] });
-  }
-});
-
-// @route   GET api/users/:id/avatar
-// @desc    View a profile photo/ avatar
-// @access  Private
-router.get("/:id/avatar", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user || !user.avatar) {
-      throw new Error();
-    }
-    res.set("Content-Type", "image/png");
-    res.send(user.avatar);
-  } catch (e) {
-    res.status(404).send();
-  }
-});
 
 // Route   POST api/users
 // @desc   Register a user
@@ -55,7 +17,11 @@ router.post(
     check("name", "Name is required").not().isEmpty(),
     check("email", "Please include a valid email").isEmail(),
     check(
-      "password",
+      "password1",
+      "Please enter a password with 6 or more characters"
+    ).isLength({ min: 6 }),
+    check(
+      "password2",
       "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 }),
   ],
@@ -68,24 +34,29 @@ router.post(
 
       const { name, email, password1, password2 } = req.body;
       const user = await User.findOne({ email });
-      if (!user) {
-        res.status(500).send({ errors: [{ msg: "User already exists" }] });
+      if (user) {
+        return res
+          .status(500)
+          .send({ errors: [{ msg: "User already exists" }] });
       }
 
       if (password1 != password2) {
-        res.status(500).send({ errors: [{ msg: "Passwords don't match" }] });
+        return res
+          .status(500)
+          .send({ errors: [{ msg: "Passwords don't match" }] });
       }
 
       // Register means creating/ feeding the user into the db and also returning a token
-      const newUser = await new User(req.body);
+      const newUser = await new User({ ...req.body, password: password1 });
       const token = await newUser.generateAuthToken();
 
-      sendWelcomeEmail(user.email, user.name);
+      sendWelcomeEmail(newUser.email, newUser.name);
       await newUser.save();
 
       // Send msg to client
       res.status(201).send({ user: newUser, token });
     } catch (e) {
+      console.log(e);
       res.status(500).send({ errors: [{ msg: "Unable to Register" }] });
     }
   }
@@ -175,12 +146,54 @@ router.post(
       .toBuffer();
     req.user.avatar = buffer;
     await req.user.save();
-    res.send();
+    res.send({ msg: "Profile photo added successfully!!" });
   },
   (error, req, res, next) => {
     res.status(400).send({ errors: [{ msg: error.message }] });
   }
 );
+
+// @route   GET api/users/me
+// @desc    Get the user
+// @access  Private
+router.get("/me", auth, async (req, res) => {
+  try {
+    res.json({ user: req.user });
+  } catch (e) {
+    res.status(401).send({ errors: [{ msg: "Please Authenticate" }] });
+  }
+});
+
+// @route   GET api/users/avatar/me
+// @desc    View your own profile photo/ avatar
+// @access  Private
+router.get("/avatar/me", auth, async (req, res) => {
+  try {
+    if (!req.user.avatar) {
+      throw new Error();
+    }
+    res.set("Content-Type", "image/png");
+    res.send(req.user.avatar);
+  } catch (e) {
+    res.status(404).send({ errors: [{ msg: "No profile photo found" }] });
+  }
+});
+
+// @route   GET api/users/:id/avatar
+// @desc    View a profile photo/ avatar
+// @access  Private
+router.get("/:id/avatar", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user || !user.avatar) {
+      throw new Error();
+    }
+    res.set("Content-Type", "image/png");
+    res.send(user.avatar);
+  } catch (e) {
+    res.status(404).send();
+  }
+});
 
 // @route   DELETE api/users/me
 // @desc    Delete yourself
@@ -190,7 +203,7 @@ router.delete("/me", auth, async (req, res) => {
   try {
     await req.user.remove();
     sendCancelationEmail(req.user.email, req.user.name);
-    res.send(req.user);
+    res.send({ user: req.user });
   } catch (e) {
     res.status(500).send({ errors: [{ msg: "Server Error" }] });
   }
@@ -200,7 +213,7 @@ router.delete("/me", auth, async (req, res) => {
 // @desc    Remove profile photo/ avatar
 // @access  Private
 
-router.delete("/users/me/avatar", auth, async (req, res) => {
+router.delete("/me/avatar", auth, async (req, res) => {
   req.user.avatar = undefined;
   await req.user.save();
   res.send();

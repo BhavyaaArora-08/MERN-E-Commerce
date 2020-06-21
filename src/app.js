@@ -11,12 +11,16 @@ app.use(compression()); //use compression for static items served from server
 // Connecting to the database
 require("./db/mongoose");
 
-// Routers
-app.use("/api/users", userRouter);
-
 // For outgoing responses and incoming requests
 app.use(express.json({ extended: false }));
 app.use(express.urlencoded({ extended: false }));
+
+app.get("/", (req, res) => {
+  res.send({ msg: "Api Running" });
+});
+
+// Routers
+app.use("/api/users", userRouter);
 
 const PORT = process.env.PORT || 5000;
 

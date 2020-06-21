@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     minLength: 6,
   },
-  avatar: { type: buffer },
+  avatar: { type: Buffer },
   gender: {
     type: String,
   },
@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
     {
       token: {
         type: String,
+        required: true,
       },
     },
   ],
