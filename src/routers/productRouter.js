@@ -1,15 +1,18 @@
-const router = new express.Router();
+const express = require("express");
+const router = express.Router();
 const auth = require("../middleware/auth");
 const authAdmin = require("../middleware/authAdmin");
 const multer = require("multer");
 const sharp = require("sharp");
 const Product = require("../models/Product");
+const { check, validationResult } = require("express-validator");
 
 // Everything should be accessible to the admin
 
 // Route   GET api/products
 // @desc   Get all products
 // @access Public
+
 router.get("/", async (req, res) => {
   try {
     const products = await Product.find({});
@@ -22,17 +25,40 @@ router.get("/", async (req, res) => {
 // Route   POST api/products
 // @desc   Create a product
 // @access Private (only Admin)
-router.post("/", [authAdmin, auth], async (req, res) => {
-  try {
-    const product = await Product.findById(req.product.id);
-    if (product) {
-      return res.status(409).json({ msg: "Product already exists!" });
+
+router.post(
+  "/",
+  [
+    auth,
+    authAdmin,
+    // add custom validations in middleware
+    check("name", "Name is required").not().isEmpty(),
+    check("productCode", "Product Code is required").not().isEmpty(),
+    check("price", "Please include a valid email").isInt(),
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).send({ errors: errors.array() });
+      }
+      let product = await Product.findOne({
+        productCode: req.body.productCode,
+      });
+
+      if (product) {
+        return res.status(409).json({ msg: "Product already exists!" });
+      }
+
+      product = await new Product({ ...req.body });
+      await product.save();
+
+      res.json({ msg: "Product added successfully" });
+    } catch (e) {
+      res.status(500).send({ errors: [{ msg: "Server Error" }] });
     }
-    res.json({ msg: "Product added successfully" });
-  } catch (e) {
-    res.status(500).send({ errors: [{ msg: "Server Error" }] });
   }
-});
+);
 
 const upload = multer({
   limits: {
@@ -52,7 +78,7 @@ const upload = multer({
 
 router.post(
   "/:id/avatar",
-  [authAdmin, auth],
+  [auth, authAdmin],
   upload.single("avatar"),
   async (req, res) => {
     const buffer = await sharp(req.file.buffer)
@@ -67,11 +93,19 @@ router.post(
     if (!product) {
       return res.status(404).json({ msg: "Product not found!" });
     }
-    await Product.findByIdAndUpdate(req.params.id, {
-      ...product,
-      avatar: buffer,
-    });
-    res.send({ msg: "Profile photo added successfully!!" });
+    try {
+      await Product.findByIdAndUpdate(
+        req.params.id,
+        {
+          avatar: buffer,
+        },
+        { useFindAndModify: false }
+      );
+
+      res.send({ msg: "Profile photo added successfully!!" });
+    } catch (e) {
+      res.status(500).send({ errors: [{ msg: "Server Error", error: e }] });
+    }
   },
   (error, req, res, next) => {
     res.status(400).send({ errors: [{ msg: error.message }] });
@@ -81,7 +115,8 @@ router.post(
 // Route   DELETE api/products
 // @desc   Delete all products
 // @access Private (only Admin)
-router.delete("/", [authAdmin, auth], async (req, res) => {
+
+router.delete("/", [auth, authAdmin], async (req, res) => {
   try {
     const products = await Product.deleteMany({});
     res.json({ msg: "All Products deleted successfully! Shop is now empty" });
@@ -106,16 +141,37 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// @route   GET api/products/:id/avatar
+// @desc    View a profile photo/ avatar
+// @access  Public
+router.get("/:id/avatar", async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product || !product.avatar) {
+      throw new Error();
+    }
+    res.set("Content-Type", "image/png");
+    res.send(product.avatar);
+  } catch (e) {
+    res.status(404).send();
+  }
+});
+
 // Route   PUT api/products/:id
 // @desc   Update a product
 // @access Private (only Admin)
-router.get("/:id", [authAdmin, auth], async (req, res) => {
+
+router.put("/:id", [auth, authAdmin], async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ msg: "Product not found!" });
     }
-    await Product.findByIdAndUpdate(req.params.id, { ...req.body });
+    await Product.findByIdAndUpdate(
+      req.params.id,
+      { ...req.body },
+      { useFindAndModif: false }
+    );
     res.json({ product });
   } catch (e) {
     res.status(500).send({ errors: [{ msg: "Server Error" }] });
@@ -125,7 +181,8 @@ router.get("/:id", [authAdmin, auth], async (req, res) => {
 // Route   DELETE api/products/:id
 // @desc   Delete a particular product
 // @access Private (only Admin)
-router.delete("/:id", [authAdmin, auth], async (req, res) => {
+
+router.delete("/:id", [auth, authAdmin], async (req, res) => {
   try {
     const products = await Product.deleteOne({ _id: req.params.id });
     res.json({ msg: "Product deleted successfully!" });
@@ -134,4 +191,12 @@ router.delete("/:id", [authAdmin, auth], async (req, res) => {
   }
 });
 
+module.exports = router;
 // Filtering done at the client side
+
+/**
+ * eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+ * eyJ1c2VyIjp7ImlkIjoiNWVlZmUzODlmNDhhMWYyZjQwMDU4OWJkIn
+ * 0sImlhdCI6MTU5Mjc3OTY1NywiZXhwIjoxNTkyOTUyNDU3fQ.
+ * VUTw_JZvdvDnr3ruEVBEAf_m8i30z5mn59oixDDNl3c
+ */

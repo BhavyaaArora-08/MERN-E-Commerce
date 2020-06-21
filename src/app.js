@@ -3,6 +3,7 @@ const userRouter = require("./routers/userRouter");
 const { json } = require("express");
 const config = require("config");
 var compression = require("compression");
+const productRouter = require("./routers/productRouter");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 
 // Routers
 app.use("/api/users", userRouter);
+app.use("/api/products", productRouter);
 
 const PORT = process.env.PORT || 5000;
 

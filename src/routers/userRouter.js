@@ -6,6 +6,8 @@ const auth = require("../middleware/auth");
 const { sendWelcomeEmail, sendCancelationEmail } = require("../emails/account");
 const multer = require("multer");
 const sharp = require("sharp");
+const authAdmin = require("../middleware/authAdmin");
+const config = require("config");
 
 // Route   POST api/users
 // @desc   Register a user
@@ -115,6 +117,74 @@ router.post("/logout", auth, async (req, res) => {
     res.status(500).send({ error: e || "Server error" });
   }
 });
+
+// @route   POST api/users/admin
+// @desc    Create an admin
+// @access  Public
+router.post(
+  "/admin",
+  [
+    // add custom validations in middleware
+    check("name", "Name is required").not().isEmpty(),
+    check("email", "Please include a valid email").isEmail(),
+    check(
+      "password1",
+      "Please enter a password with 6 or more characters"
+    ).isLength({ min: 6 }),
+    check(
+      "password2",
+      "Please enter a password with 6 or more characters"
+    ).isLength({ min: 6 }),
+  ],
+  async (req, res) => {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).send({ errors: errors.array() });
+      }
+
+      if (
+        !req.body.ADMIN_KEY ||
+        req.body.ADMIN_KEY !== config.get("ADMIN_SECRET_KEY")
+      ) {
+        return res.status(500).send({ errors: [{ msg: "Access Denied!" }] });
+      }
+
+      const { name, email, password1, password2 } = req.body;
+      const user = await User.findOne({ email });
+      if (user) {
+        return res
+          .status(500)
+          .send({ errors: [{ msg: "User already exists" }] });
+      }
+
+      if (password1 != password2) {
+        return res
+          .status(500)
+          .send({ errors: [{ msg: "Passwords don't match" }] });
+      }
+
+      // Register means creating/ feeding the user into the db and also returning a token
+      const newUser = await new User({
+        ...req.body,
+        password: password1,
+        isAdmin: true,
+      });
+
+      const token = await newUser.generateAuthToken();
+
+      sendWelcomeEmail(newUser.email, newUser.name);
+      await newUser.save();
+
+      // Send msg to client
+      res
+        .status(201)
+        .send({ msg: "You are now an admin!", user: newUser, token });
+    } catch (e) {
+      res.status(500).send({ errors: [{ msg: "Server Error" }] });
+    }
+  }
+);
 
 const upload = multer({
   limits: {

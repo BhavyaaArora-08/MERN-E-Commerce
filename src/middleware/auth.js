@@ -7,12 +7,11 @@ const auth = async (req, res, next) => {
   try {
     // Get token from the header
     // const token = req.header("x-auth-token");
-
     const token = req.header("Authorization").replace("Bearer ", "");
-
     if (!token) {
       return res.status(401).json({ msg: "Authorization denied" });
     }
+
     const decoded = jwt.verify(token, config.get("JWT_SECRET"));
 
     const user = await User.findOne({

@@ -33,10 +33,9 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  adminKey:{
-    type:String,
-    dea
-  }
+  adminKey: {
+    type: String,
+  },
 });
 
 // for a particular user
