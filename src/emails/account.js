@@ -6,6 +6,7 @@ sgMail.setApiKey(config.get("SENDGRID_API_KEY"));
 const fromEmail = "akoreanyeoja@gmail.com";
 
 const sendWelcomeEmail = (email, name) => {
+  console.log("bye");
   sgMail.send({
     to: email,
     from: fromEmail,

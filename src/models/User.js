@@ -29,6 +29,14 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
+  adminKey:{
+    type:String,
+    dea
+  }
 });
 
 // for a particular user
