@@ -2,8 +2,11 @@ const express = require("express");
 const userRouter = require("./routers/userRouter");
 const { json } = require("express");
 const config = require("config");
+var compression = require("compression");
 
 const app = express();
+
+app.use(compression()); //use compression for static items served from server
 
 // Connecting to the database
 require("./db/mongoose");

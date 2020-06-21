@@ -3,6 +3,47 @@ const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const User = require("../models/User");
 const auth = require("../../middleware/auth");
+const { sendWelcomeEmail, sendCancelationEmail } = require("../emails/account");
+const multer = require("multer");
+const sharp = require("sharp");
+
+// @route   GET api/users/me
+// @desc    Get the user
+// @access  Private
+router.get("/me", async (req, res) => {
+  return req.user;
+});
+
+// @route   GET api/users/avatar/me
+// @desc    View your own profile photo/ avatar
+// @access  Private
+router.get("/avatar/me", auth, async (req, res) => {
+  try {
+    if (!req.user.avatar) {
+      throw new Error();
+    }
+    res.set("Content-Type", "image/png");
+    res.send(req.user.avatar);
+  } catch (e) {
+    res.status(404).send({ errors: [{ msg: "No profile photo found" }] });
+  }
+});
+
+// @route   GET api/users/:id/avatar
+// @desc    View a profile photo/ avatar
+// @access  Private
+router.get("/:id/avatar", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user || !user.avatar) {
+      throw new Error();
+    }
+    res.set("Content-Type", "image/png");
+    res.send(user.avatar);
+  } catch (e) {
+    res.status(404).send();
+  }
+});
 
 // Route   POST api/users
 // @desc   Register a user
@@ -39,6 +80,7 @@ router.post(
       const newUser = await new User(req.body);
       const token = await newUser.generateAuthToken();
 
+      sendWelcomeEmail(user.email, user.name);
       await newUser.save();
 
       // Send msg to client
@@ -87,13 +129,6 @@ router.post(
   }
 );
 
-// @route   GET api/users
-// @desc    Get yourself
-// @access  Private
-router.get("/", auth, (req, res) => {
-  res.send(req.user);
-});
-
 // @route   POST api/users/logout
 // @desc    Logout user
 // @access  Private
@@ -109,4 +144,66 @@ router.post("/logout", auth, async (req, res) => {
     res.status(500).send({ error: e || "Server error" });
   }
 });
+
+const upload = multer({
+  limits: {
+    fileSize: 1000000,
+  },
+  fileFilter(req, file, cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error("Please upload an image"));
+    }
+    cb(undefined, true);
+  },
+});
+
+// @route   POST api/users/me/avatar
+// @desc    Add profile photo/ avatar
+// @access  Private
+
+router.post(
+  "/avatar",
+  auth,
+  upload.single("avatar"),
+  async (req, res) => {
+    const buffer = await sharp(req.file.buffer)
+      .resize({
+        width: 250,
+        height: 250,
+      })
+      .png()
+      .toBuffer();
+    req.user.avatar = buffer;
+    await req.user.save();
+    res.send();
+  },
+  (error, req, res, next) => {
+    res.status(400).send({ errors: [{ msg: error.message }] });
+  }
+);
+
+// @route   DELETE api/users/me
+// @desc    Delete yourself
+// @access  Private
+
+router.delete("/me", auth, async (req, res) => {
+  try {
+    await req.user.remove();
+    sendCancelationEmail(req.user.email, req.user.name);
+    res.send(req.user);
+  } catch (e) {
+    res.status(500).send({ errors: [{ msg: "Server Error" }] });
+  }
+});
+
+// @route   DELETE api/users/me/avatar
+// @desc    Remove profile photo/ avatar
+// @access  Private
+
+router.delete("/users/me/avatar", auth, async (req, res) => {
+  req.user.avatar = undefined;
+  await req.user.save();
+  res.send();
+});
+
 module.exports = router;
