@@ -17,10 +17,6 @@ const userSchema = new mongoose.Schema({
     required: true,
     minLength: 6,
   },
-  avatar: { type: Buffer },
-  gender: {
-    type: String,
-  },
   tokens: [
     {
       token: {
@@ -36,6 +32,13 @@ const userSchema = new mongoose.Schema({
   adminKey: {
     type: String,
   },
+  orders: [
+    {
+      order: {
+        type: "String", // here I will store the id of product that's it usse we can access everything about the product
+      },
+    },
+  ],
 });
 
 // for a particular user

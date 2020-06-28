@@ -22,10 +22,6 @@ router.post(
       "password1",
       "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 }),
-    check(
-      "password2",
-      "Please enter a password with 6 or more characters"
-    ).isLength({ min: 6 }),
   ],
   async (req, res) => {
     try {
@@ -49,7 +45,7 @@ router.post(
       }
 
       // Register means creating/ feeding the user into the db and also returning a token
-      const newUser = await new User({ ...req.body, password: password1 });
+      const newUser = await new User({ name, email, password: password1 });
       const token = await newUser.generateAuthToken();
 
       sendWelcomeEmail(newUser.email, newUser.name);

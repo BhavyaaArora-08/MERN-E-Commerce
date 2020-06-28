@@ -193,10 +193,3 @@ router.delete("/:id", [auth, authAdmin], async (req, res) => {
 
 module.exports = router;
 // Filtering done at the client side
-
-/**
- * eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
- * eyJ1c2VyIjp7ImlkIjoiNWVlZmUzODlmNDhhMWYyZjQwMDU4OWJkIn
- * 0sImlhdCI6MTU5Mjc3OTY1NywiZXhwIjoxNTkyOTUyNDU3fQ.
- * VUTw_JZvdvDnr3ruEVBEAf_m8i30z5mn59oixDDNl3c
- */
