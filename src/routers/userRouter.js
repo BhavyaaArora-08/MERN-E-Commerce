@@ -30,7 +30,7 @@ router.post(
         return res.status(400).send({ errors: errors.array() });
       }
 
-      const { name, email, password1, password2 } = req.body;
+      const { name, email, password1, password2, isAdmin, secret } = req.body;
       const user = await User.findOne({ email });
       if (user) {
         return res
@@ -38,6 +38,16 @@ router.post(
           .send({ errors: [{ msg: "User already exists" }] });
       }
 
+      if (isAdmin && secret !== config.get("ADMIN_SECRET_KEY")) {
+        return res.status(500).send({
+          errors: [
+            {
+              msg:
+                "Admin access denied. Hacking alert set. You are being watched",
+            },
+          ],
+        });
+      }
       if (password1 != password2) {
         return res
           .status(500)
@@ -45,7 +55,12 @@ router.post(
       }
 
       // Register means creating/ feeding the user into the db and also returning a token
-      const newUser = await new User({ name, email, password: password1 });
+      const newUser = await new User({
+        name,
+        email,
+        password: password1,
+        isAdmin: isAdmin ? isAdmin : false,
+      });
       const token = await newUser.generateAuthToken();
 
       sendWelcomeEmail(newUser.email, newUser.name);
@@ -105,7 +120,7 @@ router.post("/logout", auth, async (req, res) => {
   try {
     const user = req.user;
     req.user.tokens = req.user.tokens.filter((token) => {
-      return token.token !== req.token;
+      return token !== req.token;
     });
     await user.save();
     res.json({ msg: "User logged out successfully!" });
@@ -117,6 +132,7 @@ router.post("/logout", auth, async (req, res) => {
 // @route   POST api/users/admin
 // @desc    Create an admin
 // @access  Public
+// later combined route for user signup and admin route
 router.post(
   "/admin",
   [

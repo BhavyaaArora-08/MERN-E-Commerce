@@ -33,8 +33,8 @@ router.post(
     authAdmin,
     // add custom validations in middleware
     check("name", "Name is required").not().isEmpty(),
-    check("productCode", "Product Code is required").not().isEmpty(),
     check("price", "Please include a valid email").isInt(),
+    check("category", "category is required").not().isEmpty(),
   ],
   async (req, res) => {
     try {
@@ -43,7 +43,7 @@ router.post(
         return res.status(400).send({ errors: errors.array() });
       }
       let product = await Product.findOne({
-        productCode: req.body.productCode,
+        name: req.body.name,
       });
 
       if (product) {
@@ -53,7 +53,7 @@ router.post(
       product = await new Product({ ...req.body });
       await product.save();
 
-      res.json({ msg: "Product added successfully" });
+      res.json({ msg: "Product added successfully", product });
     } catch (e) {
       res.status(500).send({ errors: [{ msg: "Server Error" }] });
     }

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const bcrypt = require("bcryptjs");
+const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -32,13 +33,9 @@ const userSchema = new mongoose.Schema({
   adminKey: {
     type: String,
   },
-  orders: [
-    {
-      order: {
-        type: "String", // here I will store the id of product that's it usse we can access everything about the product
-      },
-    },
-  ],
+  orders: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+  wishlist: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+  cart: [{ type: Schema.Types.ObjectId, ref: "Product" }],
 });
 
 // for a particular user

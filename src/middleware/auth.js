@@ -6,8 +6,8 @@ const auth = async (req, res, next) => {
   // Verify token
   try {
     // Get token from the header
-    // const token = req.header("x-auth-token");
-    const token = req.header("Authorization").replace("Bearer ", "");
+    const token = req.header("x-auth-token");
+    // const token = req.header("Authorization").replace("Bearer ", "");
     if (!token) {
       return res.status(401).json({ msg: "Authorization denied" });
     }
