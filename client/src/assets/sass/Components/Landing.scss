@@ -1,0 +1,276 @@
+@import url("https://fonts.googleapis.com/css2?family=Niconne&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap");
+
+.container1 {
+  padding: 4rem 2rem 0rem 2rem;
+  // background-image: url("../../../Components/img/back.svg");
+  background-image: url("../../img/Bg/8.jpg");
+  background-attachment: fixed;
+  background-size: cover;
+  margin: 0;
+  height: 550px;
+
+  img {
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  color: white;
+  font-weight: 600;
+  font-size: 60px;
+  text-align: left;
+
+  button {
+    font-size: 2rem;
+  }
+  .text {
+    font-size: 6rem;
+    color: #dfdfdf;
+
+    text-shadow: 4px 4px 0px #000, -4px 0 0px #000, 7px 4px 0 #fff;
+  }
+}
+
+.container2 {
+  box-sizing: border-box;
+  margin: 0;
+  text-align: center;
+
+  h2 {
+    margin: 5rem auto 1rem auto;
+    font-size: 4rem;
+  }
+  .row {
+    padding: 3rem;
+    position: relative;
+    .main {
+      box-sizing: border-box;
+      margin: 0rem;
+      padding: 0.5rem;
+
+      img {
+        height: 100%;
+        max-height: 500px;
+        width: 100%;
+        padding: 20px;
+        border: 1px solid black;
+        border-left: 0px;
+        border-bottom: 0px;
+      }
+
+      button {
+        margin: 30% auto;
+        position: absolute;
+        right: 5rem;
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+.container3 {
+  box-sizing: border-box;
+
+  text-align: center;
+
+  h2 {
+    margin: 5rem auto 2rem auto;
+    font-size: 4rem;
+  }
+
+  .row {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 4rem;
+
+    button {
+      font-size: 3.5rem;
+    }
+
+    .main {
+      margin: 0 auto;
+
+      img {
+        width: 100%;
+        height: 400px;
+        max-width: 250px;
+        margin: 0;
+        padding: 0;
+      }
+      @media (min-width: "800px") {
+        img {
+          height: 400px;
+          max-width: none;
+        }
+      }
+
+      ul {
+        li {
+          display: inline;
+          margin: 0;
+        }
+
+        :first-child {
+          margin-left: -3rem;
+          margin-right: 1rem;
+        }
+
+        .discount {
+          color: red;
+          text-decoration: line-through;
+        }
+      }
+    }
+  }
+}
+
+.big {
+  .container4 {
+    background-color: pink;
+    box-sizing: border-box;
+    // padding: 4rem;
+    margin: 4rem;
+    // height: 47rem;
+    // margin-top: 200px;
+    text-align: center;
+
+    img {
+      height: 100%;
+      width: 100%;
+      padding: 10px;
+      max-height: 500px;
+      max-width: 300px;
+    }
+
+    .content {
+      padding: 4rem;
+      text-align: left;
+
+      h3 {
+        font-size: 5rem;
+      }
+
+      button {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+.container5 {
+  background-color: powderblue;
+  margin: 0.5rem 3.8rem;
+  padding: 4rem;
+
+  h1 {
+    font-size: 5rem;
+  }
+
+  * {
+    padding: 0.5rem 1rem;
+  }
+
+  button {
+    margin: 0;
+  }
+
+  input {
+    margin: 0rem 1rem;
+    font-size: 1.5rem;
+    padding: 0.7rem 2rem;
+    width: 70%;
+  }
+}
+
+.container6 {
+  padding: 8rem 6rem;
+  box-sizing: border-box;
+
+  h2 {
+    margin: 2rem auto;
+    font-size: 4rem;
+  }
+
+  .row {
+    text-align: left;
+
+    .content {
+      margin-bottom: 5rem;
+      padding: 0;
+      padding-left: 1rem;
+      padding-right: 5rem;
+    }
+
+    p {
+      font-size: 3rem;
+      font-weight: 400;
+      font-style: italic;
+    }
+
+    .icon {
+      font-size: 8rem;
+    }
+  }
+}
+
+.footer {
+  background-color: rgb(218, 216, 216);
+  padding: 2rem;
+
+  p {
+    text-align: center;
+  }
+
+  .row {
+    padding: 2rem;
+
+    .content {
+      margin: 2rem auto;
+
+      a {
+        color: black;
+        display: block;
+      }
+
+      a:hover {
+        color: royalblue;
+      }
+    }
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+}
+
+#navbar {
+  background-color: black;
+  color: white;
+  // position: fixed;
+}
+
+#navbar2 {
+  background-color: turquoise;
+  color: black;
+}
+
+.active-class-2 {
+  text-decoration: underline;
+}
+
+#profile {
+  margin: 5px 0;
+  padding: 0;
+  background-color: transparent !important;
+}
+
+#menu {
+  background-color: pink;
+}
+
+#optio {
+  font-weight: "500";
+  padding: 0 !important;
+  margin: 0 !important;
+}

@@ -42,6 +42,7 @@ router.post(
       if (!errors.isEmpty()) {
         return res.status(400).send({ errors: errors.array() });
       }
+      console.log("hey");
       let product = await Product.findOne({
         name: req.body.name,
       });
@@ -49,8 +50,11 @@ router.post(
       if (product) {
         return res.status(409).json({ msg: "Product already exists!" });
       }
+      console.log("hey");
 
-      product = await new Product({ ...req.body });
+      const { name, category, price } = req.body;
+      product = await new Product({ name, category, price });
+      console.log("hey", product);
       await product.save();
 
       res.json({ msg: "Product added successfully", product });
@@ -91,7 +95,7 @@ router.post(
 
     const product = await Product.findById(req.params.id);
     if (!product) {
-      return res.status(404).json({ msg: "Product not found!" });
+      return res.status(404).send({ errors: [{ msg: "Product not found!" }] });
     }
     try {
       await Product.findByIdAndUpdate(

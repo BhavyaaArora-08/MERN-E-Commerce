@@ -1,0 +1,30 @@
+#img:hover {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+#price {
+  border: 1px solid cadetblue;
+  padding: 10px;
+  font-size: 14px;
+  // border-radius: 0 0 10px 10px;
+  span {
+    color: cadetblue;
+  }
+  button {
+    text-align: right;
+    font-size: 14px;
+  }
+}
+
+
+
+#text {
+  border: 1px solid cadetblue;
+  padding: 10px;
+  margin: 0;
+  font-size: 14px;
+  // border-radius: 10px 10px 0 0;
+  color: cadetblue;
+  margin-bottom: -30px;
+}

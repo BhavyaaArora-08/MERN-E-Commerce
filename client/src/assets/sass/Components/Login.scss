@@ -1,0 +1,158 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat+Subrayada&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.App {
+  margin: 0;
+  padding: 0px;
+  height: 100%;
+  font-family: "Scada", sans-serif;
+}
+
+.containere {
+  background-image: url("../../img/Bg/back.svg");
+  background-attachment: fixed;
+  background-size: cover;
+  position: relative;
+  height: 100%;
+  max-width: 400px;
+  min-height: 500px;
+  margin: 3rem auto 0 auto;
+  font-size: 2rem;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.containere .form {
+  border-radius: 2rem;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 2rem 3rem;
+  width: 40rem;
+  padding-bottom: 2rem;
+  min-width: 30rem;
+}
+
+@media only screen and (max-width: 40rem) {
+  .containere .form {
+    width: 90%;
+  }
+}
+
+.containere .form h1 {
+  font-weight: 600;
+  margin: 1rem 0;
+  margin-bottom: 2rem;
+  font-size: 3rem;
+}
+
+.containere .form input {
+  margin: 0px auto;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  font-size: 1.5rem;
+  padding: 5px 10px;
+}
+
+.containere .form .gender input {
+  width: 1rem;
+  margin: 0;
+  padding: 0;
+}
+
+.containere .form label {
+  margin: 0;
+}
+
+.containere .form .forgot {
+  margin: 1rem 0px 1rem 9rem;
+}
+
+.containere .form button {
+  width: 100%;
+  margin: 1rem auto;
+  font-size: 1.5rem;
+}
+
+.containere .form .gender span {
+  text-align: center;
+}
+
+.extra {
+  width: 100%;
+  background-color: white;
+  margin: 2rem auto 1rem auto;
+  box-sizing: border-box;
+  padding: 0.7rem;
+  text-align: center;
+  color: white;
+  border-radius: 0.5rem;
+  background-color: rgba(108, 143, 129, 0.562);
+}
+
+.extra .text {
+  margin: 0 1rem;
+}
+
+a {
+  color: black;
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+
+a:hover {
+  color: black;
+  font-weight: 500;
+}
+
+hr {
+  border: 0.7px solid gray;
+  opacity: 0.5;
+}
+
+#or {
+  background: transparent;
+  border-radius: 2rem;
+  font-size: 1.5rem;
+  padding: 0.8rem;
+  position: absolute;
+  bottom: 6.8rem;
+  right: 48%;
+}
+
+.gender {
+  text-align: left;
+}
+
+.gender .g {
+  display: inline-block;
+  width: 11rem;
+  padding: 0.5rem 0;
+  position: relative;
+  left: -4rem;
+}
+
+.gender .g label {
+  margin-right: 0.5rem;
+}
+
+.containere .login {
+  margin-top: 5rem;
+
+  #or {
+    bottom: 10rem;
+  }
+}
+
+.alerts {
+  margin: 1rem 0;
+}
+
+.white {
+  color: "white";
+}
