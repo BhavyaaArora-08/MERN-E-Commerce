@@ -14,11 +14,11 @@ const all = () => {
   return (
     <div className="row">
       <div className="main col-lg-4 col-md-4 col-sm-6">
-        <div class="product-img">
+        <div className="product-img">
           <img src={src1} alt="" />
         </div>
-        <div class="product-caption">
-          <div class="product-ratting">
+        <div className="product-caption">
+          <div className="product-ratting">
             <AiFillStar />
             <AiFillStar />
             <AiFillStar />
@@ -28,20 +28,20 @@ const all = () => {
           <h4>
             <a href="#">Green Dress with details</a>
           </h4>
-          <div class="price">
+          <div className="price">
             <ul>
               <li>$40.00</li>
-              <li class="discount">$60.00</li>
+              <li className="discount">$60.00</li>
             </ul>
           </div>
         </div>
       </div>
       <div className="main col-lg-4 col-md-4 col-sm-6">
-        <div class="product-img">
+        <div className="product-img">
           <img src={src2} alt="" />
         </div>
-        <div class="product-caption">
-          <div class="product-ratting">
+        <div className="product-caption">
+          <div className="product-ratting">
             <AiFillStar />
             <AiFillStar />
             <AiFillStar />
@@ -51,20 +51,20 @@ const all = () => {
           <h4>
             <a href="#">Green Dress with details</a>
           </h4>
-          <div class="price">
+          <div className="price">
             <ul>
               <li>$40.00</li>
-              <li class="discount">$60.00</li>
+              <li className="discount">$60.00</li>
             </ul>
           </div>
         </div>
       </div>
       <div className="main col-lg-4 col-md-4 col-sm-6">
-        <div class="product-img">
+        <div className="product-img">
           <img src={src3} alt="" />
         </div>
-        <div class="product-caption">
-          <div class="product-ratting">
+        <div className="product-caption">
+          <div className="product-ratting">
             <AiFillStar />
             <AiFillStar />
             <AiFillStar />
@@ -74,20 +74,20 @@ const all = () => {
           <h4>
             <a href="#">Green Dress with details</a>
           </h4>
-          <div class="price">
+          <div className="price">
             <ul>
               <li>$40.00</li>
-              <li class="discount">$60.00</li>
+              <li className="discount">$60.00</li>
             </ul>
           </div>
         </div>
       </div>
       <div className="main col-lg-4 col-md-4 col-sm-6">
-        <div class="product-img">
+        <div className="product-img">
           <img src={src4} alt="" />
         </div>
-        <div class="product-caption">
-          <div class="product-ratting">
+        <div className="product-caption">
+          <div className="product-ratting">
             <AiFillStar />
             <AiFillStar />
             <AiFillStar />
@@ -97,20 +97,20 @@ const all = () => {
           <h4>
             <a href="#">Green Dress with details</a>
           </h4>
-          <div class="price">
+          <div className="price">
             <ul>
               <li>$40.00</li>
-              <li class="discount">$60.00</li>
+              <li className="discount">$60.00</li>
             </ul>
           </div>
         </div>
       </div>
       <div className="main col-lg-4 col-md-4 col-sm-6">
-        <div class="product-img">
+        <div className="product-img">
           <img src={src5} alt="" />
         </div>
-        <div class="product-caption">
-          <div class="product-ratting">
+        <div className="product-caption">
+          <div className="product-ratting">
             <AiFillStar />
             <AiFillStar />
             <AiFillStar />
@@ -120,20 +120,20 @@ const all = () => {
           <h4>
             <a href="#">Green Dress with details</a>
           </h4>
-          <div class="price">
+          <div className="price">
             <ul>
               <li>$40.00</li>
-              <li class="discount">$60.00</li>
+              <li className="discount">$60.00</li>
             </ul>
           </div>
         </div>
       </div>
       <div className="main col-lg-4 col-md-4 col-sm-6">
-        <div class="product-img">
+        <div className="product-img">
           <img src={src6} alt="" />
         </div>
-        <div class="product-caption">
-          <div class="product-ratting">
+        <div className="product-caption">
+          <div className="product-ratting">
             <AiFillStar />
             <AiFillStar />
             <AiFillStar />
@@ -143,10 +143,10 @@ const all = () => {
           <h4>
             <a href="#">Green Dress with details</a>
           </h4>
-          <div class="price">
+          <div className="price">
             <ul>
               <li>$40.00</li>
-              <li class="discount">$60.00</li>
+              <li className="discount">$60.00</li>
             </ul>
           </div>
         </div>

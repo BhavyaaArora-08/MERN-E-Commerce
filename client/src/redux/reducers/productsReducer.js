@@ -1,10 +1,5 @@
-import { Switch } from "@material-ui/core";
-
 const initialState = {
   allProducts: [],
-  inCart: [],
-  inWishlist: [],
-  orders: [],
 };
 
 export default (state = initialState, action) => {

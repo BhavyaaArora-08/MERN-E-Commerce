@@ -21,6 +21,7 @@ const Login = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log(email, password);
     props.login({ email, password });
   };
   return (

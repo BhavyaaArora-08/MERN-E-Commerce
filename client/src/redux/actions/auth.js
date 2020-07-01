@@ -27,7 +27,7 @@ export const register = ({ email, name, password1, password2 }) => async (
     console.log(errors);
     if (errors) {
       errors.forEach((error) => {
-        dispatch(setAlert("danger", error.msg));
+        dispatch(setAlert("error", error.msg));
       });
     }
 
@@ -53,7 +53,7 @@ export const login = ({ email, password }) => async (dispatch) => {
     console.log(errors);
     if (errors) {
       errors.forEach((error) => {
-        dispatch(setAlert("danger", error.msg));
+        dispatch(setAlert("error", error.msg));
       });
     }
 
@@ -75,14 +75,13 @@ export const logoutUser = (token) => async (dispatch) => {
   try {
     await axios.post("/api/users/logout", null, config);
     dispatch({ type: "LOGOUT" });
-    console.log("hey", "logout");
 
     dispatch(setAlert("success", "You have logged out successfully!"));
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach((error) => {
-        dispatch(setAlert("danger", error.msg, uuidv4()));
+        dispatch(setAlert("error", error.msg, uuidv4()));
       });
     }
   }
@@ -91,17 +90,25 @@ export const logoutUser = (token) => async (dispatch) => {
 export const getUser = () => async (dispatch) => {
   try {
     dispatch({ type: "LOADING" });
-    console.log("USER_LOAD");
     const res = await axios.get("/api/users/me");
-    console.log("USER_LOAD");
+    const cartI = await axios.get("/api/users/product/cart");
+    const ordersI = await axios.get("/api/users/product/orders");
+    const wishlistI = await axios.get("/api/users/product/wishlist");
+    res.data.cart = cartI.data.products
+      ? cartI.data.products.map((p) => {
+          const result = { product: p.product, count: p.count };
+          console.log((result, "RESULT"));
+          return result;
+        })
+      : [];
+    res.data.orders = ordersI.data.products.map((p) => p.product);
+    res.data.wishlist = wishlistI.data.products.map((p) => p.product);
     dispatch({ type: "LOAD_USER", payload: res.data });
-    console.log("USER_LOAD");
-    console.log(res.data);
   } catch (err) {
     const errors = err.response.data.errors;
     if (errors) {
       errors.forEach((error) => {
-        dispatch(setAlert("danger", error.msg, uuidv4()));
+        dispatch(setAlert("error", error.msg, uuidv4()));
       });
     }
   }

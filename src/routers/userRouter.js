@@ -8,6 +8,9 @@ const multer = require("multer");
 const sharp = require("sharp");
 const authAdmin = require("../middleware/authAdmin");
 const config = require("config");
+const { isValidObjectId } = require("mongoose");
+const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 // Route   POST api/users
 // @desc   Register a user
@@ -235,6 +238,71 @@ router.post(
   }
 );
 
+// only for cart,orders and wishlist
+// @route   PATCH api/users/product
+// @desc    Update the user
+// @access  Private
+router.patch("/product", auth, async (req, res) => {
+  try {
+    const product = req.body.product;
+    const where = req.body.where;
+    var ObjectId = mongoose.Types.ObjectId;
+    var Id = new ObjectId(product.id);
+
+    const index = req.user[where].findIndex((el) => {
+      return el.product && el.product.equals(Id);
+    });
+
+    if (index != -1) {
+      const arr = req.user[where];
+      const ans = arr.map((e, idx) => {
+        if (idx === index) {
+          e.count = e.count + 1;
+          return e;
+        }
+        return e;
+      });
+
+      req.user[where] = ans;
+      await req.user.save();
+      return res.send({ msg: `Added to ${where}` });
+    }
+    req.user[where].push({ product: Id, count: 1 });
+    await req.user.save();
+    res.send({ msg: `Added to ${where}` });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ errors: [{ msg: "Server Error" }] });
+  }
+});
+
+// @route   GET api/users/product
+// @desc    Get the products in cart, wishlist, orders
+// @access  Private
+router.get("/product/:where", auth, async (req, res) => {
+  try {
+    const where = req.params.where;
+    var ObjectId = mongoose.Types.ObjectId;
+    var userId = new ObjectId(req.user._id);
+    await User.findById(userId)
+      .populate(`${where}.product`)
+      .exec(function (err, user) {
+        if (err) {
+          res.status(500).send({ errors: [{ msg: "Server Error" }] });
+        } else {
+          if (!user) {
+            res.status(404).send({ errors: [{ msg: "No user found" }] });
+          } else {
+            res.send({ products: user[where] });
+          }
+        }
+      });
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ errors: [{ msg: "Server Error" }] });
+  }
+});
+
 // @route   GET api/users/me
 // @desc    Get the user
 // @access  Private
@@ -243,6 +311,30 @@ router.get("/me", auth, async (req, res) => {
     res.json({ user: req.user });
   } catch (e) {
     res.status(401).send({ errors: [{ msg: "Please Authenticate" }] });
+  }
+});
+
+router.post("/isValid", async (req, res) => {
+  try {
+    const token = req.header("x-auth-token");
+    if (!token) {
+      return res.status(401).json({ msg: false });
+    }
+    const decoded = jwt.verify(token, config.get("JWT_SECRET"));
+
+    const user = await User.findOne({
+      _id: decoded.user.id, // check is the token belongs to the user
+      "tokens.token": token, // check if the token still exists
+    }).select("-password");
+
+    if (!user) {
+      return res.status(401).json({ msg: false });
+    } else {
+      return res.json({ msg: true });
+    }
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ errors: [{ msg: "Server Error" }] });
   }
 });
 

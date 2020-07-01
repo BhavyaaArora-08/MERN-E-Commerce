@@ -1,14 +1,21 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.js";
-import { MDBMask, MDBView } from "mdbreact";
+// import { MDBMask, MDBView } from "mdbreact";
 import { MdShoppingCart } from "react-icons/md";
 import { connect } from "react-redux";
-import { addToCart } from "../redux/actions/product";
+import { addTo } from "../redux/actions/cart";
+import { setAlert } from "../redux/actions/alert";
+import { v4 as uuidv4 } from "uuid";
 
 function ImageCard1(props) {
-  const onClick = (e) => {
+  const onClick1 = (e) => {
     e.preventDefault();
+    if (!props.isAuth) {
+      props.setAlert("error", "Please Login In/ Register First", uuidv4());
+      return false;
+    }
+    props.addTo({ where: "cart", product: props.product });
   };
 
   return (
@@ -38,7 +45,7 @@ function ImageCard1(props) {
       >
         <span>Price : Rs {props.price}</span>
         <button
-          onClick={onClick}
+          onClick={onClick1}
           style={{
             position: "absolute",
             right: "0",
@@ -60,7 +67,7 @@ const mapStateToProps = (state, props) => {
   };
 };
 
-export default connect(mapStateToProps, { addToCart })(ImageCard1);
+export default connect(mapStateToProps, { addTo, setAlert })(ImageCard1);
 
 // style={{
 //   position: "absolute",

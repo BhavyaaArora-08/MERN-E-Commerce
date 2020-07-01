@@ -33,9 +33,25 @@ const userSchema = new mongoose.Schema({
   adminKey: {
     type: String,
   },
-  orders: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+  orders: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Product",
+    },
+  ],
   wishlist: [{ type: Schema.Types.ObjectId, ref: "Product" }],
-  cart: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+  cart: [
+    {
+      product: {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
+      count: {
+        type: Number,
+        default: 0,
+      },
+    },
+  ],
 });
 
 // for a particular user

@@ -179,7 +179,7 @@ const NavBar = (props) => {
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink exact to="/orders" className="nav-link">
+                <NavLink exact to="/cart" className="nav-link">
                   <div style={{ textAlign: "center" }}>
                     <AiOutlineShoppingCart
                       style={{ fontSize: "2.4rem", color: "white" }}
@@ -190,7 +190,7 @@ const NavBar = (props) => {
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink exact to="/cart" className="nav-link">
+                <NavLink exact to="/order" className="nav-link">
                   <div style={{ textAlign: "center" }}>
                     <RiShoppingBagLine
                       style={{ fontSize: "2.4rem", color: "white" }}
