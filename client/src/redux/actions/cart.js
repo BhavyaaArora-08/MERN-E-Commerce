@@ -19,6 +19,7 @@ export const addTo = ({ product, where }) => async (dispatch) => {
     // also getting the populating
     const res2 = await axios.get(`/api/users/product/${where}`);
     dispatch({ type: `ADD_TO`, payload: { ...res2.data, to: where } });
+    console.log("hey");
 
     dispatch(setAlert("success", res.data.msg, uuidv4()));
   } catch (err) {

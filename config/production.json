@@ -1,0 +1,6 @@
+{
+  "MONGO_URI": "mongodb+srv://Codess08:confidence24%23@cluster0-1p8bw.mongodb.net/MERN_ECOMMERCE?retryWrites=true&w=majority",
+  "JWT_SECRET": "idareyoutocrackthis",
+  "SENDGRID_API_KEY": "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",
+  "ADMIN_SECRET_KEY": "hiadminhowareuh"
+}
