@@ -14,7 +14,7 @@ import {
   DropdownToggle,
 } from "reactstrap";
 import { connect } from "react-redux";
-import { logoutUser } from "../redux/actions/auth";
+import { logoutUser } from "../../redux/actions/auth";
 
 import { BsPerson, BsBookmark, BsPersonBoundingBox } from "react-icons/bs";
 import { GrCar } from "react-icons/gr";
@@ -40,7 +40,6 @@ const NavBar = (props) => {
   const onClick = (e) => {
     e.preventDefault();
     props.logoutUser(props.token);
-    console.log("hey", "logout");
   };
 
   if (dropdownOpen) {

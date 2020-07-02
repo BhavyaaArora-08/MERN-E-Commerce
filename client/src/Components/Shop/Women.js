@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import ImageCard1 from "./ImageCard1";
+import ImageCard1 from "../Layout/ImageCard1";
 import { connect } from "react-redux";
-import getImageSrc from "../utils/getImageSrc";
-import src from "./img/loading.svg";
+import getImageSrc from "../../utils/getImageSrc";
+import src from "../img/loading.svg";
 
 const Men = (props) => {
   return (
@@ -33,7 +33,6 @@ const mapStateToProps = (state, props) => {
   const products = state.product.allProducts.filter(
     (p) => p.category === "Women" || p.category === "women"
   );
-  console.log(products);
   return {
     products,
     loading: state.auth.loading,

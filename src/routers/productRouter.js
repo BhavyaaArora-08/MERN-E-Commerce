@@ -42,7 +42,6 @@ router.post(
       if (!errors.isEmpty()) {
         return res.status(400).send({ errors: errors.array() });
       }
-      console.log("hey");
       let product = await Product.findOne({
         name: req.body.name,
       });
@@ -50,11 +49,9 @@ router.post(
       if (product) {
         return res.status(409).json({ msg: "Product already exists!" });
       }
-      console.log("hey");
 
       const { name, category, price } = req.body;
       product = await new Product({ name, category, price });
-      console.log("hey", product);
       await product.save();
 
       res.json({ msg: "Product added successfully", product });

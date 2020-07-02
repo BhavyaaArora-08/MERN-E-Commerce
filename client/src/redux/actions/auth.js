@@ -24,7 +24,6 @@ export const register = ({ email, name, password1, password2 }) => async (
     dispatch(setAlert("success", "You are registered successfully!", uuidv4()));
   } catch (err) {
     const errors = err.response.data.errors;
-    console.log(errors);
     if (errors) {
       errors.forEach((error) => {
         dispatch(setAlert("error", error.msg));
@@ -50,7 +49,6 @@ export const login = ({ email, password }) => async (dispatch) => {
     dispatch(setAlert("success", "You are logged in successfully!", uuidv4()));
   } catch (err) {
     const errors = err.response.data.errors;
-    console.log(errors);
     if (errors) {
       errors.forEach((error) => {
         dispatch(setAlert("error", error.msg));
@@ -87,29 +85,28 @@ export const logoutUser = (token) => async (dispatch) => {
   }
 };
 
-export const getUser = () => async (dispatch) => {
-  try {
-    dispatch({ type: "LOADING" });
-    const res = await axios.get("/api/users/me");
-    const cartI = await axios.get("/api/users/product/cart");
-    const ordersI = await axios.get("/api/users/product/orders");
-    const wishlistI = await axios.get("/api/users/product/wishlist");
-    res.data.cart = cartI.data.products
-      ? cartI.data.products.map((p) => {
-          const result = { product: p.product, count: p.count };
-          console.log((result, "RESULT"));
-          return result;
-        })
-      : [];
-    res.data.orders = ordersI.data.products.map((p) => p.product);
-    res.data.wishlist = wishlistI.data.products.map((p) => p.product);
-    dispatch({ type: "LOAD_USER", payload: res.data });
-  } catch (err) {
-    const errors = err.response.data.errors;
-    if (errors) {
-      errors.forEach((error) => {
-        dispatch(setAlert("error", error.msg, uuidv4()));
-      });
-    }
-  }
-};
+// export const getUser = () => async (dispatch) => {
+//   try {
+//     dispatch({ type: "LOADING" });
+//     const res = await axios.get("/api/users/me");
+//     const cartI = await axios.get("/api/users/product/cart");
+//     const ordersI = await axios.get("/api/users/product/orders");
+//     const wishlistI = await axios.get("/api/users/product/wishlist");
+//     res.data.cart = cartI.data.products
+//       ? cartI.data.products.map((p) => {
+//           const result = { product: p.product, count: p.count };
+//           return result;
+//         })
+//       : [];
+//     res.data.orders = ordersI.data.products.map((p) => p.product);
+//     res.data.wishlist = wishlistI.data.products.map((p) => p.product);
+//     dispatch({ type: "LOAD_USER", payload: res.data });
+//   } catch (err) {
+//     const errors = err.response.data.errors;
+//     if (errors) {
+//       errors.forEach((error) => {
+//         dispatch(setAlert("error", error.msg, uuidv4()));
+//       });
+//     }
+//   }
+// };

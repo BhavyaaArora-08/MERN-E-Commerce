@@ -14,7 +14,7 @@ import {
   DropdownToggle,
 } from "reactstrap";
 import { connect } from "react-redux";
-import { logoutUser } from "../redux/actions/auth";
+import { logoutUser } from "../../redux/actions/auth";
 
 import { BsPerson, BsBookmark, BsPersonBoundingBox } from "react-icons/bs";
 import { GrCar } from "react-icons/gr";
@@ -32,7 +32,7 @@ const NavBar2 = (props) => {
   let icons = {};
 
   if (!props.isAdmin) {
-    console.log("Access Denied");
+    alert("Access Denied");
     return <Redirect to="/" />;
   }
 

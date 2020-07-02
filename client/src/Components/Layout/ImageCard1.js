@@ -4,15 +4,15 @@ import "bootstrap/dist/js/bootstrap.js";
 // import { MDBMask, MDBView } from "mdbreact";
 import { MdShoppingCart } from "react-icons/md";
 import { connect } from "react-redux";
-import { addTo } from "../redux/actions/cart";
-import { setAlert } from "../redux/actions/alert";
+import { addTo } from "../../redux/actions/cart";
+import { setAlert } from "../../redux/actions/alert";
 import { v4 as uuidv4 } from "uuid";
 
 function ImageCard1(props) {
   const onClick1 = (e) => {
     e.preventDefault();
     if (!props.isAuth) {
-      props.setAlert("error", "Please Login In/ Register First", uuidv4());
+      props.setAlert("error", "Please Login/ Register First", uuidv4());
       return false;
     }
     props.addTo({ where: "cart", product: props.product });

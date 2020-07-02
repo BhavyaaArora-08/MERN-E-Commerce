@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar2 from "./Navbar2";
+// import Navbar2 from "../Layout/Navbar2";
 import {
   BrowserRouter as Router,
   Switch,
@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { connect } from "react-redux";
 import { AllProducts, AllUsers, PostProduct, MakeAdmin, Main } from "./AdminKe";
-import Sidebar from "./Sidebar";
+import Sidebar from "../Layout/Sidebar";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const AdminDB = (props) => {

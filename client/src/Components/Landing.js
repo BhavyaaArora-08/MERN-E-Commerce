@@ -5,7 +5,7 @@ import Container3 from "./Landing/Container3";
 import Container4 from "./Landing/Container4";
 import Container5 from "./Landing/Container5";
 import Container6 from "./Landing/Container6";
-import Footer from "./Footer";
+import Footer from "./Layout/Footer";
 
 const Landing = () => {
   return (

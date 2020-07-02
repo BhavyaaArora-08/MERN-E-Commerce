@@ -105,13 +105,27 @@ router.post(
       }
 
       const token = await user.generateAuthToken();
-      res
-        .status(200)
-        .json({ msg: "User logged in successfully!", user, token });
+      var ObjectId = mongoose.Types.ObjectId;
+      var userId = new ObjectId(user._id);
+      // const arr = ["cart", "wishlist","orders"];
+      // arr.map((where)=>{
+
+      // })
+      await User.findById(userId)
+        .populate("cart.product wishlist.product orders.product")
+        .exec(function (err, user) {
+          if (err) {
+            res.status(500).send({ errors: [{ msg: "Server Error" }] });
+          } else {
+            if (!user) {
+              res.status(404).send({ errors: [{ msg: "No user found" }] });
+            } else {
+              res.json({ user, token });
+            }
+          }
+        });
     } catch (e) {
-      res
-        .status(500)
-        .send({ errors: [{ msg: "Incorrect username/password field" }] });
+      res.status(500).send({ errors: [{ msg: "Server Error" }] });
     }
   }
 );
@@ -308,33 +322,27 @@ router.get("/product/:where", auth, async (req, res) => {
 // @access  Private
 router.get("/me", auth, async (req, res) => {
   try {
-    res.json({ user: req.user });
+    var ObjectId = mongoose.Types.ObjectId;
+    var userId = new ObjectId(req.user._id);
+    // const arr = ["cart", "wishlist","orders"];
+    // arr.map((where)=>{
+
+    // })
+    await User.findById(userId)
+      .populate("cart.product wishlist.product orders.product")
+      .exec(function (err, user) {
+        if (err) {
+          res.status(500).send({ errors: [{ msg: "Server Error" }] });
+        } else {
+          if (!user) {
+            res.status(404).send({ errors: [{ msg: "No user found" }] });
+          } else {
+            res.json({ user });
+          }
+        }
+      });
   } catch (e) {
     res.status(401).send({ errors: [{ msg: "Please Authenticate" }] });
-  }
-});
-
-router.post("/isValid", async (req, res) => {
-  try {
-    const token = req.header("x-auth-token");
-    if (!token) {
-      return res.status(401).json({ msg: false });
-    }
-    const decoded = jwt.verify(token, config.get("JWT_SECRET"));
-
-    const user = await User.findOne({
-      _id: decoded.user.id, // check is the token belongs to the user
-      "tokens.token": token, // check if the token still exists
-    }).select("-password");
-
-    if (!user) {
-      return res.status(401).json({ msg: false });
-    } else {
-      return res.json({ msg: true });
-    }
-  } catch (e) {
-    console.log(e);
-    res.status(500).send({ errors: [{ msg: "Server Error" }] });
   }
 });
 
@@ -392,5 +400,29 @@ router.delete("/me/avatar", auth, async (req, res) => {
   await req.user.save();
   res.send();
 });
+
+// router.post("/isValid", async (req, res) => {
+//   try {
+//     const token = req.header("x-auth-token");
+//     if (!token) {
+//       return res.status(401).json({ msg: false });
+//     }
+//     const decoded = jwt.verify(token, config.get("JWT_SECRET"));
+
+//     const user = await User.findOne({
+//       _id: decoded.user.id, // check is the token belongs to the user
+//       "tokens.token": token, // check if the token still exists
+//     }).select("-password");
+
+//     if (!user) {
+//       return res.status(401).json({ msg: false });
+//     } else {
+//       return res.json({ msg: true });
+//     }
+//   } catch (e) {
+//     console.log(e);
+//     res.status(500).send({ errors: [{ msg: "Server Error" }] });
+//   }
+// });
 
 module.exports = router;

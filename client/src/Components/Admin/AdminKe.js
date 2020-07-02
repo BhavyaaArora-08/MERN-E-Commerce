@@ -1,8 +1,8 @@
 import React, { Fragment, useState } from "react";
 import Table from "react-bootstrap/Table";
-import getImgSrc from "../utils/getImageSrc";
-import { createProduct } from "../redux/actions/product";
-import src from "./img/loading.svg";
+import getImgSrc from "../../utils/getImageSrc";
+import { createProduct } from "../../redux/actions/product";
+import src from "../img/loading.svg";
 
 export const Main = (props) => {
   return (
@@ -111,7 +111,6 @@ export const PostProduct = (props) => {
   const onSubmit = (e) => {
     e.preventDefault();
     props.dispatch(createProduct(formData));
-    console.log("hyeyeyeyey");
   };
 
   const onChange = (e) => {

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { NavLink, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { register } from "../redux/actions/auth";
+import { register } from "../../redux/actions/auth";
 
 const Login = (props) => {
   const [formData, setFormData] = useState({
@@ -24,9 +24,7 @@ const Login = (props) => {
   }
 
   const onChange = (e) => {
-    console.log(e.target.name, e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    console.log(formData);
   };
   return (
     <div className="containere">

@@ -19,9 +19,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...action.payload,
+        cart: action.payload.user.cart,
+        wishlist: action.payload.user.wishlist,
+        orders: action.payload.user.orders,
         isAuthenticated: true,
         loading: false,
       };
+    }
+    case "NOT_LOADING": {
+      return { ...state, loading: false };
     }
     case "LOADING": {
       return { ...state, loading: true };
@@ -36,21 +42,18 @@ export default (state = initialState, action) => {
     }
 
     case "LOAD_USER": {
-      console.log(action.payload, "here");
       return {
         ...state,
-        ...action.payload,
+        user: action.payload,
         cart: action.payload.cart,
         wishlist: action.payload.wishlist,
         orders: action.payload.orders,
         loading: false,
       };
     }
-    case "PRODUCT_ADDED": {
-      return { ...state, loading: false };
-    }
     case "REGISTER_FAIL":
     case "LOGOUT":
+    case "AUTH_ERROR":
     case "LOGIN_FAIL": {
       localStorage.removeItem("token");
 
@@ -62,15 +65,6 @@ export default (state = initialState, action) => {
         user: null,
       };
     }
-    case "RESET": {
-      return {
-        token: null,
-        isAuthenticated: false,
-        user: null,
-        loading: false,
-      };
-    }
-
     default:
       return state;
   }

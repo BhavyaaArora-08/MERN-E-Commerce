@@ -6,15 +6,14 @@ export const addTo = ({ product, where }) => async (dispatch) => {
   try {
     dispatch({ type: "LOADING" });
     const body = { product: { id: product._id }, where };
-    console.log(body);
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
 
-    // if()
-    // THIS AREA CAN BE IMPROVED
+    // TODO THIS AREA HAS TO BE IMPROVED
+
     // updating user model
     const res = await axios.patch("/api/users/product", body, config);
     // also getting the populating

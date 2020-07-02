@@ -3,17 +3,13 @@ import { setAlert } from "./alert";
 
 export const loadProducts = () => async (dispatch) => {
   try {
-    console.log("hey");
-
     const res = await axios.get("/api/products");
-    console.log(res.data.products);
     dispatch({
       type: "LOAD_PRODUCTS",
       payload: res.data.products,
     });
   } catch (err) {
     const errors = err.response.data.errors;
-    console.log(errors);
     if (errors) {
       errors.forEach((error) => {
         dispatch(setAlert("error", error.msg));
@@ -49,7 +45,6 @@ export const createProduct = (product) => async (dispatch) => {
     dispatch(setAlert("success", "Product Added"));
   } catch (err) {
     const errors = err.response.data.errors;
-    console.log(errors);
     if (errors) {
       errors.forEach((error) => {
         dispatch(setAlert("error", error.msg));
