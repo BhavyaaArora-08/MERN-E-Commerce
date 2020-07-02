@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavLink, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { login } from "../../redux/actions/auth";
-import src from "../img/loading.svg";
+import src from "../../assets/img/loading.svg";
 
 const Login = (props) => {
   const [formData, setFormData] = useState({

@@ -1,11 +1,11 @@
 import React from "react";
 // images
-import src4 from "../../img/yellow1.jpeg";
-import src5 from "../../img/winwomen.jpeg";
-import src2 from "../../img/partywom.jpeg";
-import src6 from "../../img/glam.jpeg";
-import src1 from "../../img/sumwom.jpeg";
-import src3 from "../../img/6s.jpg";
+import src4 from "../../../assets/img/yellow1.jpeg";
+import src5 from "../../../assets/img/winwomen.jpeg";
+import src2 from "../../../assets/img/partywom.jpeg";
+import src6 from "../../../assets/img/glam.jpeg";
+import src1 from "../../../assets/img/sumwom.jpeg";
+import src3 from "../../../assets/img/6s.jpg";
 
 // icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";

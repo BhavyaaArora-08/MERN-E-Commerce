@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import ImageCard2 from "../Layout/ImageCard2";
 import getImageSrc from "../../utils/getImageSrc";
-import src from "../img/loading.svg";
+import src from "../../assets/img/loading.svg";
 import { Redirect } from "react-router";
 
 const Cart = (props) => {

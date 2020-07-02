@@ -1,5 +1,5 @@
 import React from "react";
-import src1 from "../img/boy.png";
+import src1 from "../../assets/img/boy.png";
 
 const Container4 = () => {
   return (

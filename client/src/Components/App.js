@@ -23,7 +23,7 @@ import { Provider } from "react-redux";
 import store from "../redux/store/configureStore";
 import setAuthToken from "../utils/setAuthToken.js";
 import { loadUP } from "../redux/actions/common";
-import src from "./img/loading.svg";
+import src from "../assets/img/loading.svg";
 
 // import axios from "axios";
 

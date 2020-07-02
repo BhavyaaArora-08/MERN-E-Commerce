@@ -1,9 +1,9 @@
 import React from "react";
 import { MDBAnimation } from "mdbreact";
-import src1 from "../img/cover.jpg";
-import src3 from "../img/13060.jpg";
-import src2 from "../img/15s.jpg";
-import src4 from "../img/4.jpg";
+import src1 from "../../assets/img/cover.jpg";
+import src3 from "../../assets/img/13060.jpg";
+import src2 from "../../assets/img/15s.jpg";
+import src4 from "../../assets/img/4.jpg";
 import { NavLink } from "react-router-dom";
 
 const Container2 = () => {

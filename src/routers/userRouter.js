@@ -125,7 +125,9 @@ router.post(
           }
         });
     } catch (e) {
-      res.status(500).send({ errors: [{ msg: "Server Error" }] });
+      res
+        .status(500)
+        .send({ errors: [{ msg: "Incorrect Username/password" }] });
     }
   }
 );

@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import Table from "react-bootstrap/Table";
 import getImgSrc from "../../utils/getImageSrc";
 import { createProduct } from "../../redux/actions/product";
-import src from "../img/loading.svg";
+import src from "../../assets/img/loading.svg";
 
 export const Main = (props) => {
   return (

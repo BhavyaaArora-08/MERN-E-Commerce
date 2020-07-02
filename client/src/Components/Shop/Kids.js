@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ImageCard1 from "../Layout/ImageCard1";
 import { connect } from "react-redux";
 import getImageSrc from "../../utils/getImageSrc";
-import src from "../img/loading.svg";
+import src from "../../assets/img/loading.svg";
 
 const Men = (props) => {
   return (
