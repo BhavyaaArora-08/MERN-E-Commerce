@@ -11,8 +11,6 @@ export const loadUP = () => async (dispatch) => {
         .then((res) => {
           const user = res[0].data.user;
           const products = res[1].data.products;
-          console.log("user", user);
-          console.log("products", products);
           dispatch({ type: "LOAD_PRODUCTS", payload: products });
           dispatch({ type: "LOAD_USER", payload: user });
         });
